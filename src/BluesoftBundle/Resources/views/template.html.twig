@@ -11,7 +11,9 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-    {% block body %}{% endblock %}
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
     {% block javascripts %}
         <script type="application/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
     {% endblock %}

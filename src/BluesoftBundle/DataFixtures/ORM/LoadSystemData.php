@@ -31,6 +31,10 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         return $this->container;
     }
 
+    /**
+     * @todo check if columns are appropriate
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $faker = $this->getContainer()->get('davidbadura_faker.faker');

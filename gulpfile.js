@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
+var watch = require('gulp-watch');
 
 var mainPaths = {
     src: './src/',
@@ -51,14 +52,20 @@ gulp.task('styles_libs', function () {
     var paths_libs = mainPaths.libs;
     var paths_src = mainPaths.src;
 
-    return gulp.src([
-        paths_libs + libs.bootstrap + styles.bootstrap,
-        paths_src + libs.global + styles.global
+    return watch(mainPaths.src + '**/*.scss', function () {
+        gulp.src([
+            paths_libs + libs.bootstrap + styles.bootstrap,
+            paths_src + libs.global + styles.global
 
-    ])
-        .pipe(sass().on('error', sass.logError))
-        .pipe(concat('styles.css'))
-        .pipe(gulp.dest(dest.main + dest.styles))
+        ])
+            .pipe(sass().on('error', sass.logError))
+            .pipe(concat('styles.css'))
+            .pipe(gulp.dest(dest.main + dest.styles));
+
+        console.log((new Date().toString()) + ' :: Recompiled files');
+    });
+
+
 });
 
 gulp.task('fonts_libs', function () {
@@ -69,5 +76,6 @@ gulp.task('fonts_libs', function () {
     ])
         .pipe(gulp.dest(dest.main + dest['fonts']))
 });
+
 
 gulp.task('default', ['scripts_libs', 'styles_libs', 'fonts_libs']);
