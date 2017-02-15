@@ -1,0 +1,4 @@
+bluesoft:
+    resource: "@BluesoftBundle/Controller/"
+    type:     annotation
+    prefix:   /
