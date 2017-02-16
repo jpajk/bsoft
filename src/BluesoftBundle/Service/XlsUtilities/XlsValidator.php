@@ -34,16 +34,6 @@ class XlsValidator
     }
 
     /**
-     *
-     * @param array $row
-     * @return bool
-     */
-    public function validateRow(array $row)
-    {
-
-    }
-
-    /**
      * @return $this
      */
     protected function validateExtension()

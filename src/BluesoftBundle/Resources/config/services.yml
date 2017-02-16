@@ -2,6 +2,9 @@ services:
     xls.validator:
         class: BluesoftBundle\Service\XlsUtilities\XlsValidator
 
+    xls.data.validator:
+        class: BluesoftBundle\Service\XlsUtilities\XlsDataValidator
+
     xls.agent:
         class: BluesoftBundle\Service\XlsUtilities\XlsAgent
         arguments: ["@service_container", "@xls.validator"]

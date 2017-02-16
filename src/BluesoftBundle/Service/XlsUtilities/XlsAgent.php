@@ -57,7 +57,7 @@ class XlsAgent
     protected function iterateOverRowsAndColumns($sheet)
     {
         foreach( $sheet->getRowIterator() as $index => $row ){
-
+            /** Skip the first row in every case */
             if ($index === 1)
                 continue;
 
@@ -66,29 +66,17 @@ class XlsAgent
             foreach( $row->getCellIterator() as $cell )
                 $m[] = $cell->getCalculatedValue();
 
+            $pass = $this->dispatchRowValidation($m);
+
             dump($m);
         }
-
-//        dump($sheet->rangeToArray('A1:J' . $highest_row));
-//
-////        for ($a=1; $a >= $highest_row; $a++) {
-////
-////        }
-//
-//        $row_iterator = $sheet->getRowIterator();
-//
-//
-//
-//        dump($row_iterator);
-//        dump($sheet->getRowIterator(), $sheet->getColumnIterator());
-
-
     }
 
     /**
      * @param array $row
+     * @return bool
      */
-    protected function validateRow(array $row)
+    protected function dispatchRowValidation(array $row)
     {
 
     }

@@ -4,12 +4,17 @@ namespace BluesoftBundle\Service\XlsUtilities;
 
 class XlsError
 {
-    private $message;
+    private $message='';
     private $additional_data = [
         'cell' => 0,
         'row' => 0,
         'contents' => ''
     ];
+
+    function __construct($message='Fatal error')
+    {
+        $this->setMessage($message);
+    }
 
     public function setAdditionalDatum($key, $content)
     {
