@@ -6,6 +6,11 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\File;
 
+/**
+ * Validates file extension and data contents
+ * Class XlsValidator
+ * @package BluesoftBundle\Service\XlsUtilities
+ */
 class XlsValidator
 {
     const _ALLOWED_EXTENSIONS_ = [ 'xls', 'xlsx' ];
@@ -15,9 +20,10 @@ class XlsValidator
     private $form;
 
     /**
+     * Handles initial validation for the file
      * @param Form $form
      */
-    public function validate(Form $form)
+    public function validateFile(Form $form)
     {
         $this->setForm($form);
 
@@ -25,6 +31,16 @@ class XlsValidator
             $this->{$action}();
 
         return $this->getForm();
+    }
+
+    /**
+     *
+     * @param array $row
+     * @return bool
+     */
+    public function validateRow(array $row)
+    {
+
     }
 
     /**
@@ -42,11 +58,6 @@ class XlsValidator
         }
 
         return $this;
-    }
-
-    protected function validateColumns()
-    {
-
     }
 
     /**

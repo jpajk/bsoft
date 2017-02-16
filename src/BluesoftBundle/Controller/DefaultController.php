@@ -21,7 +21,7 @@ class DefaultController extends Controller
         if ($form->isSubmitted()) {
             $validator = $this->get('xls.validator');
             /** @var Form $validated_form */
-            $form = $validator->validate($form);
+            $form = $validator->validateFile($form);
 
             if ($form->isValid()) {
                 $agent = $this->get('xls.agent');

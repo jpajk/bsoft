@@ -4,7 +4,9 @@ namespace BluesoftBundle\Service\XlsUtilities;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\File;
+use BluesoftBundle\Service\XlsUtilities\XlsError;
 use PHPExcel_IOFactory;
+use PHPExcel_Settings;
 
 class XlsAgent
 {
@@ -12,6 +14,8 @@ class XlsAgent
     private $validator;
     private $form;
     private $em;
+    private $reader;
+    private $errors = [];
 
     public function __construct(Container $container, $validator)
     {
@@ -31,18 +35,65 @@ class XlsAgent
 
     protected function doValidateAndParse()
     {
-        $spreadsheet = $this->getSpreadsheet();
-        dump($this->getSpreadsheet());
+        PHPExcel_Settings::setZipClass(PHPExcel_Settings::PCLZIP);
+        $php_excel = PHPExcel_IOFactory::load($this->getSpreadsheet()->getRealPath());
+        $this->setReader($php_excel);
+        $this->iterateOverSheets();
+    }
+
+    protected function iterateOverSheets()
+    {
+        $sheets = $this->getReader()->getAllSheets();
+
+        foreach ($sheets as $sheet)
+            $this->iterateOverRowsAndColumns($sheet);
+
         exit;
+    }
+
+    /**
+     * @param \PHPExcel_CachedObjectStorage_CacheBase $sheet
+     */
+    protected function iterateOverRowsAndColumns($sheet)
+    {
+        foreach( $sheet->getRowIterator() as $index => $row ){
+
+            if ($index === 1)
+                continue;
+
+            $m = [];
+
+            foreach( $row->getCellIterator() as $cell )
+                $m[] = $cell->getCalculatedValue();
+
+            dump($m);
+        }
+
+//        dump($sheet->rangeToArray('A1:J' . $highest_row));
+//
+////        for ($a=1; $a >= $highest_row; $a++) {
+////
+////        }
+//
+//        $row_iterator = $sheet->getRowIterator();
+//
+//
+//
+//        dump($row_iterator);
+//        dump($sheet->getRowIterator(), $sheet->getColumnIterator());
+
 
     }
 
-    protected function validateRow()
+    /**
+     * @param array $row
+     */
+    protected function validateRow(array $row)
     {
 
     }
 
-    protected function saveData()
+    protected function saveData($row)
     {
 
     }
@@ -120,5 +171,29 @@ class XlsAgent
     {
         $data = $this->getForm()->getData();
         return $data['spreadsheet'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReader()
+    {
+        return $this->reader;
+    }
+
+    /**
+     * @param mixed $reader
+     */
+    public function setReader($reader)
+    {
+        $this->reader = $reader;
+    }
+
+    /**
+     * @param XlsError $error_message
+     */
+    public function addToErrors(XlsError $error_message)
+    {
+        $this->errors[] = $error_message;
     }
 }
