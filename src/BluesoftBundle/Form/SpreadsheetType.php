@@ -14,7 +14,7 @@ class SpreadsheetType extends AbstractType
     {
         $builder
             ->add('spreadsheet', FileType::class, ['label' => 'Upload a spreadsheet'])
-            ->add('submit', SubmitType::class, ['label' => 'Prześlij plik'])
+            ->add('save', SubmitType::class, ['label' => 'Prześlij plik'])
         ;
     }
 

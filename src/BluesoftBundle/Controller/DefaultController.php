@@ -2,21 +2,31 @@
 
 namespace BluesoftBundle\Controller;
 
-use BluesoftBundle\Form\SpreadsheetType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
+use BluesoftBundle\Form\SpreadsheetType;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/")
      */
-    public function indexAction()
+    public function indexAction(Request $req)
     {
         $form = $this->createForm(SpreadsheetType::class);
+        $form->handleRequest($req);
 
         if ($form->isSubmitted()) {
-            dump($form->getData());
+            $validator = $this->get('xls.validator');
+            /** @var Form $validated_form */
+            $form = $validator->validate($form);
+
+            if ($form->isValid()) {
+                $agent = $this->get('xls.agent');
+                $agent->validateAndParse($form);
+            }
         }
 
         return $this->render(
