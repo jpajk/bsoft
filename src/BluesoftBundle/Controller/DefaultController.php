@@ -25,7 +25,12 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
                 $agent = $this->get('xls.agent');
-                $agent->validateAndParse($form);
+
+                try {
+                    $agent->validateAndParse($form);
+                } catch(\Exception $e) {
+                    dump($e);
+                }
             }
         }
 
