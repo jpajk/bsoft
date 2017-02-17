@@ -1,16 +1,22 @@
 <?php
 
 namespace BluesoftBundle\Service\XlsUtilities;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\File;
-use BluesoftBundle\Service\XlsUtilities\XlsError;
 use PHPExcel_IOFactory;
 use PHPExcel_Settings;
 use PHPExcel_Shared_Date;
+use BluesoftBundle\Entity\Contract;
+use DateTime;
 
 class XlsAgent
 {
+    const _CONTRACT_SETTERS_ = [
+
+    ];
+
     private $container;
     private $validator;
     private $form;
@@ -79,9 +85,10 @@ class XlsAgent
             if ($has_errors)
                 continue;
 
-//            $this->saveDataIntoDatabase($row);
-
+            $this->saveDataIntoDatabase($m);
         }
+
+        $this->getEm()->flush();
     }
 
     /**
@@ -94,7 +101,6 @@ class XlsAgent
         $data_validator = $this->getContainer()->get('xls.data.validator');
         /** @var XlsDataValidator $validated */
         $validated = $data_validator->validateRow($row, $index);
-        dump($validated);
         $has_errors = $validated->hasErrors();
 
         if ($has_errors) {
@@ -113,7 +119,53 @@ class XlsAgent
      */
     protected function saveDataIntoDatabase(array $row)
     {
+        $index_columns = XlsDataValidator::_INDEX_COLUMNS_;
+        /** @var EntityManager $em */
+        $em = $this->getEm();
+        $repo = $this->getContainer()
+                     ->get('doctrine')
+                     ->getRepository('BluesoftBundle:System');
 
+        $c = new Contract();
+
+        /** @todo refactor iterate */
+        $c->setActive($this->retrieveRowData($row, $index_columns['active']))
+          ->setAmount($this->retrieveRowData($row, $index_columns['amount']))
+          ->setAmountPeriod($this->retrieveRowData($row, $index_columns['amount_period']))
+          ->setAmountType($this->retrieveRowData($row, $index_columns['amount_type']))
+          ->setAuthorizationPercent($this->retrieveRowData($row, $index_columns['authorization_percent']))
+          ->setFromDate(
+            $this->returnDateFromCellValue($this->retrieveRowData($row, $index_columns['from_date']))
+            )
+          ->setToDate(
+            $this->returnDateFromCellValue($this->retrieveRowData($row, $index_columns['to_date']))
+          )
+          ->setOrderNumber($this->retrieveRowData($row, $index_columns['order_number']))
+          ->setRequest($this->retrieveRowData($row, $index_columns['request']))
+        ;
+
+        $s = $repo->findSystemByName($this->retrieveRowData($row, $index_columns['system']));
+        $c->setSystem($s);
+        $em->persist($c);
+    }
+
+    /**
+     * @param int $value
+     * @return DateTime
+     */
+    protected function returnDateFromCellValue($value)
+    {
+        return new DateTime( date('d/m/Y', $value) );
+    }
+
+    /**
+     * @param array $row
+     * @param string $key
+     * @return mixed
+     */
+    protected function retrieveRowData(array $row, $key='')
+    {
+        return $row[$key];
     }
 
     /** Getters and setters */

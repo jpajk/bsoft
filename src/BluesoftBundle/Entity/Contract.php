@@ -84,6 +84,11 @@ class Contract
      */
     private $toDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="System", inversedBy="contracts")
+     */
+    private $system;
+
 
     /**
      * Get id
@@ -300,5 +305,28 @@ class Contract
     public function getToDate()
     {
         return $this->toDate;
+    }
+
+    /**
+     * Set system
+     *
+     * @param \BluesoftBundle\Entity\System $system
+     * @return Contract
+     */
+    public function setSystem(\BluesoftBundle\Entity\System $system = null)
+    {
+        $this->system = $system;
+
+        return $this;
+    }
+
+    /**
+     * Get system
+     *
+     * @return \BluesoftBundle\Entity\System 
+     */
+    public function getSystem()
+    {
+        return $this->system;
     }
 }

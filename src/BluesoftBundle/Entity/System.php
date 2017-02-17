@@ -42,6 +42,11 @@ class System
      */
     private $supportGroup;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Contract", mappedBy="system")
+     */
+    private $contracts;
+
 
     /**
      * Get id
@@ -120,5 +125,45 @@ class System
     public function getSupportGroup()
     {
         return $this->supportGroup;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->contracts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add contracts
+     *
+     * @param \BluesoftBundle\Entity\Contract $contracts
+     * @return System
+     */
+    public function addContract(\BluesoftBundle\Entity\Contract $contracts)
+    {
+        $this->contracts[] = $contracts;
+
+        return $this;
+    }
+
+    /**
+     * Remove contracts
+     *
+     * @param \BluesoftBundle\Entity\Contract $contracts
+     */
+    public function removeContract(\BluesoftBundle\Entity\Contract $contracts)
+    {
+        $this->contracts->removeElement($contracts);
+    }
+
+    /**
+     * Get contracts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContracts()
+    {
+        return $this->contracts;
     }
 }
