@@ -16,6 +16,11 @@ class XlsError
         $this->setMessage($message);
     }
 
+    public function setAdditionalData($data)
+    {
+        $this->additional_data = $data;
+    }
+
     public function setAdditionalDatum($key, $content)
     {
         $this->additional_data[$key] = $content;

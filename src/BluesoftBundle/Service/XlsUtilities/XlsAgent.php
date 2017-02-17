@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use BluesoftBundle\Service\XlsUtilities\XlsError;
 use PHPExcel_IOFactory;
 use PHPExcel_Settings;
+use PHPExcel_Shared_Date;
 
 class XlsAgent
 {
@@ -56,32 +57,61 @@ class XlsAgent
      */
     protected function iterateOverRowsAndColumns($sheet)
     {
-        foreach( $sheet->getRowIterator() as $index => $row ){
+        foreach($sheet->getRowIterator() as $index => $row){
             /** Skip the first row in every case */
             if ($index === 1)
                 continue;
 
             $m = [];
 
-            foreach( $row->getCellIterator() as $cell )
-                $m[] = $cell->getCalculatedValue();
+            foreach($row->getCellIterator() as $cell) {
+                if(PHPExcel_Shared_Date::isDateTime($cell)) {
+                    $m[] = PHPExcel_Shared_Date::ExcelToPHP($cell->getValue());
+                } else {
+                    $m[] = $cell->getValue();
+                }
+            }
 
-            $pass = $this->dispatchRowValidation($m);
+            $has_errors = $this->dispatchRowValidation($m, $index);
 
-            dump($m);
+            /** If the row has errors, abandon it completely and continue down the file */
+
+            if ($has_errors)
+                continue;
+
+//            $this->saveDataIntoDatabase($row);
+
         }
     }
 
     /**
      * @param array $row
+     * @param int $index
      * @return bool
      */
-    protected function dispatchRowValidation(array $row)
+    protected function dispatchRowValidation(array $row, $index)
     {
+        $data_validator = $this->getContainer()->get('xls.data.validator');
+        /** @var XlsDataValidator $validated */
+        $validated = $data_validator->validateRow($row, $index);
+        dump($validated);
+        $has_errors = $validated->hasErrors();
 
+        if ($has_errors) {
+            $e = $validated->getErrors();
+
+            foreach ($e as $item)
+                $this->addToErrors($item);
+        }
+
+        return $has_errors;
     }
 
-    protected function saveData($row)
+    /**
+     * Handles saving the information into the database
+     * @param array $row
+     */
+    protected function saveDataIntoDatabase(array $row)
     {
 
     }

@@ -4,6 +4,7 @@ services:
 
     xls.data.validator:
         class: BluesoftBundle\Service\XlsUtilities\XlsDataValidator
+        arguments: ["@service_container"]
 
     xls.agent:
         class: BluesoftBundle\Service\XlsUtilities\XlsAgent
