@@ -12,4 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class ContractRepository extends EntityRepository
 {
+    public function findContractsForPresentation()
+    {
+        $result = $this->getEntityManager()
+                       ->createQueryBuilder()
+                       ->select('c', 's')
+                       ->from('BluesoftBundle:Contract', 'c')
+                       ->leftJoin('c.system', 's')
+                       ->getQuery()
+                       ->getResult();
+
+        if (!$result)
+            return [];
+
+        return $result;
+    }
+
 }

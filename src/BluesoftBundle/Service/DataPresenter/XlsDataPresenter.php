@@ -21,9 +21,7 @@ class XlsDataPresenter
         $contracts = $this->getContainer()
                           ->get('doctrine')
                           ->getRepository('BluesoftBundle:Contract')
-                          ->findAll();
-
-        dump($this->prepareData($contracts));
+                          ->findContractsForPresentation();
 
         return $this->prepareData($contracts);
     }
@@ -40,23 +38,26 @@ class XlsDataPresenter
         foreach ($input as $contract) {
             /** @var Contract $c */
             $c = $contract;
-            $r = new stdClass();
+            $r = [];
 
-            $r->active = $c->getActive();
-            $r->amount = $c->getAmount();
-            $r->amountPeriod = $c->getAmountPeriod();
-            $r->amountType = $c->getAmountType();
-            $r->authorizationPercent = $c->getAuthorizationPercent();
-            $r->fromDate = $c->getFromDate()->format($date_format);
-            $r->toDate = $c->getToDate()->format($date_format);
-            $r->orderNumber = $c->getOrderNumber();
-            $r->request = $c->getRequest();
-            $r->system = $c->getSystem()->getName();
+            $r[] = $c->getSystem()->getName();
+            $r[] = $c->getRequest();
+            $r[] = $c->getOrderNumber();
+            $r[] = $c->getFromDate()->format($date_format);
+            $r[] = $c->getToDate()->format($date_format);
+            $r[] = $c->getAmount();
+            $r[] = $c->getAmountType();
+            $r[] = $c->getAmountPeriod();
+            $r[] = $c->getAuthorizationPercent();
+            $r[] = $c->getActive();
 
             $return[] = $r;
         }
 
-        return $this->encodeToJson($return);
+        $m = new stdClass();
+        $m->data = $return;
+
+        return $this->encodeToJson($m);
     }
 
     /**
