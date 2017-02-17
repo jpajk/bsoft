@@ -10,3 +10,6 @@ services:
         class: BluesoftBundle\Service\XlsUtilities\XlsAgent
         arguments: ["@service_container", "@xls.validator"]
 
+    xls.data.presenter:
+        class: BluesoftBundle\Service\DataPresenter\XlsDataPresenter
+        arguments: ["@service_container"]
