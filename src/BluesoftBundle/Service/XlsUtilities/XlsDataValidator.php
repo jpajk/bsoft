@@ -4,9 +4,6 @@ namespace BluesoftBundle\Service\XlsUtilities;
 
 use BluesoftBundle\Repository\SystemRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
-use PHPExcel_Shared_Date;
-use PHPExcel_Cell;
-
 
 class XlsDataValidator
 {
@@ -233,7 +230,7 @@ class XlsDataValidator
     protected function dispatchErrorGeneration($type='', $args=[])
     {
         $this->addToErrors($this->generateNewError(
-            $this->getErrorMessages($type, $args)
+            self::getErrorMessages($type, $args)
         ));
     }
 
@@ -254,17 +251,30 @@ class XlsDataValidator
      * @param array $args
      * @return string
      */
-    protected function getErrorMessages($type, $args=[])
+    public static function getErrorMessages($type, $args=[])
     {
         $errors = [
-            'len_row'   => "Nieprawidłowy rozmiar rzędu {$args['row_no']}: {$args['row_len']}",
-            'sys'       => "System w rzędzie {$args['index']} nie istnieje",
-            'req'       => "Pole \"request\" nie jest poprawne w rzędzie {$args['index']} ",
-            'ord_num'   => "Pole \"order_number\" nie jest poprawne w rzędzie {$args['index']} ",
-            'field_gen' => "Pole \"{$args['field']}\" nie jest poprawne w rzędzie {$args['index']} ",
+            'len_row' => function($args) {
+                return "Nieprawidłowy rozmiar rzędu {$args['row_no']}: {$args['row_len']}";
+            },
+            'sys' => function($args) {
+                return "System w rzędzie {$args['index']} nie istnieje";
+            },
+            'req' => function($args) {
+                return "Pole \"request\" nie jest poprawne w rzędzie {$args['index']} ";
+            },
+            'ord_num' => function($args) {
+                return "Pole \"order_number\" nie jest poprawne w rzędzie {$args['index']} ";
+            },
+            'field_gen' => function($args) {
+                return "Pole \"{$args['field']}\" nie jest poprawne w rzędzie {$args['index']} ";
+            },
+            'dup' => function() {
+                return "Dane w kolumnie request nie mogą ulec powtórzeniu. ";
+            }
         ];
 
-        return $errors[$type];
+        return $errors[$type]($args);
     }
 
     /** Getters and setters */

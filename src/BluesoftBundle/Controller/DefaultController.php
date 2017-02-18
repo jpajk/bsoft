@@ -20,6 +20,7 @@ class DefaultController extends Controller
     {
         $form = $this->createForm(SpreadsheetType::class);
         $form->handleRequest($req);
+        $agent = $this->get('xls.agent');
 
         if ($form->isSubmitted()) {
             $validator = $this->get('xls.validator');
@@ -27,17 +28,22 @@ class DefaultController extends Controller
             $form = $validator->validateFile($form);
 
             if ($form->isValid()) {
-                $agent = $this->get('xls.agent');
-
+                /** @todo find better way to handle duplicate exceptions */
                 try {
                     $agent->validateAndParse($form);
                 } catch(\Exception $e) {
-                    dump($e);
+                    $agent->addDuplicateError();
                 }
             }
         }
 
-        return $this->render('BluesoftBundle:Default:index.html.twig', [ 'form' => $form->createView() ]);
+        return $this->render(
+            'BluesoftBundle:Default:index.html.twig',
+            [
+                'form'      => $form->createView(),
+                'xls_agent' => $agent
+            ]
+        );
     }
 
     /**

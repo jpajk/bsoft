@@ -1,0 +1,55 @@
+{% extends 'BluesoftBundle::template.html.twig' %}
+
+{% block body %}
+    <h1>Contracts list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Active</th>
+                <th>Amount</th>
+                <th>Amountperiod</th>
+                <th>Amounttype</th>
+                <th>Authorizationpercent</th>
+                <th>Fromdate</th>
+                <th>Ordernumber</th>
+                <th>Request</th>
+                <th>Todate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contract in contracts %}
+            <tr>
+                <td><a href="{{ path('contract_show', { 'id': contract.id }) }}">{{ contract.id }}</a></td>
+                <td>{% if contract.active %}Yes{% else %}No{% endif %}</td>
+                <td>{{ contract.amount }}</td>
+                <td>{{ contract.amountPeriod }}</td>
+                <td>{{ contract.amountType }}</td>
+                <td>{{ contract.authorizationPercent }}</td>
+                <td>{% if contract.fromDate %}{{ contract.fromDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ contract.orderNumber }}</td>
+                <td>{{ contract.request }}</td>
+                <td>{% if contract.toDate %}{{ contract.toDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('contract_show', { 'id': contract.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('contract_edit', { 'id': contract.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contract_new') }}">Create a new contract</a>
+        </li>
+    </ul>
+{% endblock %}

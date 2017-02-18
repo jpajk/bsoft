@@ -13,22 +13,26 @@ use DateTime;
 
 class XlsAgent
 {
-    const _CONTRACT_SETTERS_ = [
-
-    ];
-
     private $container;
+    /** @var XlsValidator $validator */
     private $validator;
     private $form;
     private $em;
     private $reader;
     private $errors = [];
+    private $s_validator;
 
+    /**
+     * XlsAgent constructor.
+     * @param Container $container
+     * @param XlsValidator $validator
+     */
     public function __construct(Container $container, $validator)
     {
         $this->setContainer($container);
-        $this->setValidator($validator);
         $this->setEm($this->getContainer()->get('doctrine')->getManager());
+        $this->setValidator($validator);
+        $this->setSValidator($this->getContainer()->get('validator'));
     }
 
     /**
@@ -113,6 +117,13 @@ class XlsAgent
         return $has_errors;
     }
 
+    public function addDuplicateError()
+    {
+        $e = new XlsError();
+        $e->setMessage(XlsDataValidator::getErrorMessages('dup'));
+        $this->addToErrors($e);
+    }
+
     /**
      * Handles saving the information into the database
      * @param array $row
@@ -146,6 +157,7 @@ class XlsAgent
 
         $s = $repo->findSystemByName($this->retrieveRowData($row, $index_columns['system']));
         $c->setSystem($s);
+        dump($this->getSValidator()->validate($c));
         $em->persist($c);
     }
 
@@ -187,7 +199,7 @@ class XlsAgent
     }
 
     /**
-     * @return mixed
+     * @return XlsValidator
      */
     public function getValidator()
     {
@@ -195,7 +207,7 @@ class XlsAgent
     }
 
     /**
-     * @param mixed $validator
+     * @param XlsValidator $validator
      */
     public function setValidator($validator)
     {
@@ -265,5 +277,37 @@ class XlsAgent
     public function addToErrors(XlsError $error_message)
     {
         $this->errors[] = $error_message;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        return count($this->getErrors()) > 0;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSValidator()
+    {
+        return $this->s_validator;
+    }
+
+    /**
+     * @param mixed $s_validator
+     */
+    public function setSValidator($s_validator)
+    {
+        $this->s_validator = $s_validator;
     }
 }

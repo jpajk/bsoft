@@ -1,0 +1,64 @@
+{% extends 'BluesoftBundle::template.html.twig' %}
+
+{% block body %}
+    <h1>Contract</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ contract.id }}</td>
+            </tr>
+            <tr>
+                <th>Active</th>
+                <td>{% if contract.active %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ contract.amount }}</td>
+            </tr>
+            <tr>
+                <th>Amountperiod</th>
+                <td>{{ contract.amountPeriod }}</td>
+            </tr>
+            <tr>
+                <th>Amounttype</th>
+                <td>{{ contract.amountType }}</td>
+            </tr>
+            <tr>
+                <th>Authorizationpercent</th>
+                <td>{{ contract.authorizationPercent }}</td>
+            </tr>
+            <tr>
+                <th>Fromdate</th>
+                <td>{% if contract.fromDate %}{{ contract.fromDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Ordernumber</th>
+                <td>{{ contract.orderNumber }}</td>
+            </tr>
+            <tr>
+                <th>Request</th>
+                <td>{{ contract.request }}</td>
+            </tr>
+            <tr>
+                <th>Todate</th>
+                <td>{% if contract.toDate %}{{ contract.toDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contract_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('contract_edit', { 'id': contract.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

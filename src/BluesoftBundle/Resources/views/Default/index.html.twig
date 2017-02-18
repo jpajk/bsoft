@@ -2,6 +2,13 @@
 {% block body %}
     <div class="row">
         <div class="form-wrapper">
+            {% if xls_agent.hasErrors() %}
+                <div class="alert alert-danger">
+                    {% for e in xls_agent.errors() %}
+                        <p class="error-message">{{ e.getMessage() }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {{ form_start(form) }}
             <div class="uploader">
                 {{ form_widget(form.spreadsheet, { 'attr': {'class': 'form-control  '} }) }}
