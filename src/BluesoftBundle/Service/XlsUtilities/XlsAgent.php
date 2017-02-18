@@ -59,7 +59,6 @@ class XlsAgent
         foreach ($sheets as $sheet)
             $this->iterateOverRowsAndColumns($sheet);
 
-        exit;
     }
 
     /**
@@ -157,7 +156,6 @@ class XlsAgent
 
         $s = $repo->findSystemByName($this->retrieveRowData($row, $index_columns['system']));
         $c->setSystem($s);
-        dump($this->getSValidator()->validate($c));
         $em->persist($c);
     }
 

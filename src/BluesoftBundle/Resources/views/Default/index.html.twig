@@ -31,9 +31,13 @@
                     <th>amount_period</th>
                     <th>authorization_percent</th>
                     <th>active</th>
+                    {#<th>#}{# dummy head for edit and delete actions #}{#</th>#}
                 </tr>
                 </thead>
             </table>
+        </div>
+        <div class="bottom-buttons-wrap col-xs-12 col-md-offset-1">
+            <a href="{{ path('contract_new') }}" class="btn btn-success">Dodaj nową pozycję</a>
         </div>
     </div>
 

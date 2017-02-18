@@ -1,12 +1,14 @@
 {% extends 'BluesoftBundle::template.html.twig' %}
 
 {% block body %}
-    <h1>Contract creation</h1>
+    <div class="row new-form-wrap col-xs-12 col-md-6">
+        <h1>Contract creation</h1>
 
-    {{ form_start(form) }}
+        {{ form_start(form) }}
         {{ form_widget(form) }}
         <input type="submit" value="Create" />
-    {{ form_end(form) }}
+        {{ form_end(form) }}
+    </div>
 
     <ul>
         <li>
