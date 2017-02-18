@@ -50,6 +50,7 @@ class XlsDataPresenter
             $r[] = $c->getAmountPeriod();
             $r[] = $c->getAuthorizationPercent();
             $r[] = $c->getActive();
+            $r[] = $c->getId();
 
             $return[] = $r;
         }

@@ -5,7 +5,10 @@ namespace BluesoftBundle\Controller;
 use BluesoftBundle\Entity\Contract;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Contract controller.
@@ -116,6 +119,33 @@ class ContractController extends Controller
         }
 
         return $this->redirectToRoute('contract_index');
+    }
+
+    /**
+     * Confirms deletion before proceeding
+     *
+     * @Route("/delete/{id}", name="contract_confirm_delete")
+     */
+    public function confirmDeletion(Request $request, Contract $contract)
+    {
+        $form = $this->createFormBuilder()
+                     ->add('confirm', SubmitType::class, ['label' => 'Potwierdzam'])
+                     ->add('contract', HiddenType::class, ['data' => $contract->getId()])
+                     ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($contract);
+            $em->flush($contract);
+            return $this->redirectToRoute('index');
+        }
+
+
+        return $this->render('@Bluesoft/contract/confirm_deletion.html.twig', [
+            'confirmation_form' => $form->createView()
+        ]);
     }
 
     /**

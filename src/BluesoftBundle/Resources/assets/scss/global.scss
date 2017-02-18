@@ -24,6 +24,10 @@
   table {
     text-align: center;
   }
+
+  .btn-top {
+    margin-bottom: 5px;
+  }
 }
 
 .footer {
@@ -39,4 +43,11 @@
 
 .bottom-buttons-wrap {
   margin-top: 15px;
+}
+
+.confirmation-form-wrap {
+  text-align: center;
+  #form {
+    display: inline-block;
+  }
 }

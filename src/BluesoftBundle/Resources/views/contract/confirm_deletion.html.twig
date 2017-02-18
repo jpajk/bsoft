@@ -1,0 +1,14 @@
+{% extends 'BluesoftBundle::template.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="confirmation-form-wrap">
+            <h4>Potwierdź usunięcie</h4>
+            {{ form_start(confirmation_form) }}
+            {{ form_widget(confirmation_form) }}
+            <a href="{{ path('index') }}" class="btn btn-default">Powrót</a>
+            {{ form_end(confirmation_form) }}
+        </div>
+    </div>
+
+{% endblock %}
