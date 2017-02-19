@@ -41,9 +41,6 @@
         ],
         "post-install-cmd": [
             "app/console doctrine:schema:update --force && app/console doctrine:fixtures:load"
-        ],
-        "post-update-cmd": [
-            "@symfony-scripts"
         ]
     },
     "config": {
