@@ -139,7 +139,7 @@ class XlsAgent
         $c = new Contract();
 
         /** @todo refactor iterate */
-        $c->setActive($this->retrieveRowData($row, $index_columns['active']))
+        $c->setActive(("true" === $this->retrieveRowData($row, $index_columns['active'])) ? true : false)
           ->setAmount($this->retrieveRowData($row, $index_columns['amount']))
           ->setAmountPeriod($this->retrieveRowData($row, $index_columns['amount_period']))
           ->setAmountType($this->retrieveRowData($row, $index_columns['amount_type']))
@@ -175,7 +175,7 @@ class XlsAgent
      */
     protected function retrieveRowData(array $row, $key='')
     {
-        return $row[$key];
+        return trim($row[$key]);
     }
 
     /** Getters and setters */
