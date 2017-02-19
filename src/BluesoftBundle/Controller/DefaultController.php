@@ -19,12 +19,14 @@ class DefaultController extends Controller
     public function indexAction(Request $req)
     {
         $form = $this->createForm(SpreadsheetType::class);
+        $o = $form;
         $form->handleRequest($req);
         $agent = $this->get('xls.agent');
 
         if ($form->isSubmitted()) {
             $validator = $this->get('xls.validator');
             /** @var Form $validated_form */
+
             $form = $validator->validateFile($form);
 
             if ($form->isValid()) {

@@ -43,7 +43,7 @@ class XlsValidator
         if (!$ext || !in_array($ext, self::_ALLOWED_EXTENSIONS_)) {
             $error = new FormError($this->getErrors('ext'));
             /** @var Form $ef */
-            $ef = $this->getForm()->get('spreadsheet')->addError($error);
+            $ef = $this->getForm()->addError($error);
             $this->setForm($ef);
         }
 
