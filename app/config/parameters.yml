@@ -1,0 +1,11 @@
+parameters:
+    database_host: us-cdbr-iron-east-04.cleardb.net
+    database_port: null
+    database_name: heroku_6c6b71c04f8ff00
+    database_user: be400087e8f1dd
+    database_password: cc06a11a
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: bc49ee433c81ae1381cac6e62b5c883413bca325
