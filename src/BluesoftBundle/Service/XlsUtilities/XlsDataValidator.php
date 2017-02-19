@@ -282,6 +282,11 @@ class XlsDataValidator
         $this->errors[] = $error;
     }
 
+    public function unsetErrors()
+    {
+        $this->errors = [];
+    }
+
     /**
      * @return array
      */

@@ -101,6 +101,7 @@ class XlsAgent
     protected function dispatchRowValidation(array $row, $index)
     {
         $data_validator = $this->getContainer()->get('xls.data.validator');
+
         /** @var XlsDataValidator $validated */
         $validated = $data_validator->validateRow($row, $index);
         $has_errors = $validated->hasErrors();
@@ -111,6 +112,8 @@ class XlsAgent
             foreach ($e as $item)
                 $this->addToErrors($item);
         }
+
+        $data_validator->unsetErrors();
 
         return $has_errors;
     }
