@@ -1,3 +1,4 @@
+# This file is auto-generated during the composer install
 parameters:
     database_host: us-cdbr-iron-east-04.cleardb.net
     database_port: null
