@@ -50,16 +50,6 @@ class XlsDataValidator
 
     public function validateRow(array $row, $index=0)
     {
-        $r = $this->hasCorrectLength($row);
-        if (!$r['success']) {
-            $this->dispatchErrorGeneration(
-                'len_row',
-                ['row_no' => $index, 'row_len' => $r['length']]
-            );
-
-            return $this;
-        }
-
         foreach (self::_INDEX_COLUMNS_ as $column_name => $column_index) {
             $this->setCurrentColumn($column_name);
             $this->setCurrentCell($row[$column_index]);
