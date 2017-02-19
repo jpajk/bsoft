@@ -272,9 +272,9 @@ class XlsAgent
     }
 
     /**
-     * @param XlsError $error_message
+     * @param $error_message
      */
-    public function addToErrors(XlsError $error_message)
+    public function addToErrors($error_message)
     {
         $this->errors[] = $error_message;
     }
