@@ -84,7 +84,6 @@ class XlsAgent
             $has_errors = $this->dispatchRowValidation($m, $index);
 
             /** If the row has errors, abandon it completely and continue down the file */
-
             if ($has_errors)
                 continue;
 

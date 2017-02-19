@@ -38,7 +38,7 @@ class XlsValidator
      */
     protected function validateExtension()
     {
-        $ext = $this->getSpreadsheet()->guessExtension();
+        $ext = $this->getSpreadsheet()->getClientOriginalExtension();
 
         if (!$ext || !in_array($ext, self::_ALLOWED_EXTENSIONS_)) {
             $error = new FormError($this->getErrors('ext'));
