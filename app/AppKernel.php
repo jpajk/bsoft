@@ -16,13 +16,13 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new BluesoftBundle\BluesoftBundle(),
+            new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new DavidBadura\FakerBundle\DavidBaduraFakerBundle();
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
             $bundles[] = new \Fidry\PsyshBundle\PsyshBundle();
