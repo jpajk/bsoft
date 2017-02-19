@@ -35,6 +35,11 @@ class DefaultController extends Controller
                     $agent->addDuplicateError();
                 }
             }
+
+            if ($form_errors = $form->getErrors()) {
+                foreach ($form_errors as $form_error)
+                    $agent->addToErrors($form_error);
+            }
         }
 
         return $this->render(
