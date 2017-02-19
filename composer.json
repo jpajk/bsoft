@@ -40,7 +40,6 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ],
         "post-install-cmd": [
-            "@symfony-scripts",
             "npm i && gulp",
             "app/console doctrine:schema:update --force && app/console doctrine:fixtures:load"
         ],
